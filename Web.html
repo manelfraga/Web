@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Mi primera pagina web</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        h1 {color: white;}
+        h2 {color: white;}
+        label {color: white;}
+        th {color: white;}
+    </style>
+</head>
+<body background="1.png" bgcolor="FFCECB">
+<div class="jumbotron text-center" style="background-color:#744e3b">
+    <div class="page-header">
+        <h1 style="color:black;"><b>MI PRIMERA PAGINA WEB</b></h1>
+    </div>
+</div>
+
+<div class="container">
+    <h2><b>Búsqueda repositorios GitHub</b></h2>
+    <br>
+    <div class="form-group">
+        <label for="usr">Introduce nombre de usuario de GitHub:</label>
+        <div class="col-sm-10">
+            <input type="text" id="usr" name="usr" class="form-control" placeholder="Usuario">
+        </div>
+        <div class="col-sm-2">
+            <button id="search" class="btn btn-primary btn-med">Buscar</button>
+        </div>
+    </div>
+</div>
+<br>
+<div class="container">
+    <h2>Repositorios</h2>
+    <table class="table table-hover" id = "tabla" style="color:white">
+        <thead>
+        <tr>
+            <th> <!--bgcolor="black"--> ID</th>
+            <th> Name </th>
+            <th> Description </th>
+            <th> Followers </th>
+        </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+</div>
+
+<footer class="container-fluid text-center">
+    <p style="color:Grey"><b>By: Manel</b></p>
+</footer>
+
+<script>
+    $(document).ready(function(){
+        $("#search").click(function(){
+            $("#tabla tbody tr").remove();
+            $.get("https://api.github.com/users/" + $("#usr").val() + "/repos", function(data){
+                $.each(data, function(index,element){
+                    var id = element.id;
+                    var name = element.name;
+                    var description = element.description;
+                    var followers = element.stargazers_count;
+                    var insertion = "<tr><td>" + id + "</td><td>" + name + "</td><td>" + description + "</td><td>" + followers +"</td></tr>";
+                    $("#tabla tbody").append(insertion);
+                });
+            }, "json" );
+            $("#usr").val();
+        });
+    });
+    </script>
+</body>
+</html>
